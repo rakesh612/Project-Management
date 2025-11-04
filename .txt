@@ -1,0 +1,1 @@
+first clerk enables the functionalities like signup, signin and receives the user data in clerk webhooks and store it in database through inngest functions(which manages clerk webhooks)
