@@ -1,1 +1,2 @@
-first clerk enables the functionalities like signup, signin and receives the user data in clerk webhooks and store it in database through inngest functions(which manages clerk webhooks)
+whenever user make functionalities like signup, signin, the data is available at clerk webhooks and store it in database through inngest functions(which manages clerk webhooks)
+whenever new task is created inngest function will send email to all users
