@@ -30,6 +30,11 @@ export const createproject = async(req,res)=>{
             select:{id:true}
         })
 
+        if (!teamlead) {
+  return res.status(404).json({ message: "Team lead not found" });
+}
+
+
         const project=await prisma.project.create({
             data:{
                 workspaceId,
@@ -38,7 +43,7 @@ export const createproject = async(req,res)=>{
                 status,
                 priority,
                 progress,
-                team_lead:team_lead?.id,
+                team_lead:teamlead.id,
                 start_date:start_date? new Date(start_date):null,
                 end_date:end_date? new Date(end_date):null,
             }
@@ -68,7 +73,7 @@ export const createproject = async(req,res)=>{
             where:{id:project.id},
             include:{
                 members:{include:{user:true}},
-                tasks:{include:{assignee:true, comments:{includes:{user:true}}}},
+                tasks:{include:{assignee:true, comments:{include:{user:true}}}},
                 owner:true
             }
         })
@@ -86,7 +91,7 @@ export const updateProject = async(req,res)=>{
     try {
         const {userId} = await req.auth()
         const {id, workspaceId, description, name, status, start_date, end_date,
-               progress, priority} = req.body;
+               progress, priority} = req.body;  
 
         //check if user has admin role for workspace
         const workspace = await prisma.workspace.findUnique({
@@ -99,7 +104,7 @@ export const updateProject = async(req,res)=>{
             return res.status(404).json({message:"Workspace not found"});
         }
 
-        if(!workspace.members.some((member)=>member.userId === userId && role==="ADMIN"))
+        if(!workspace.members.some((member)=>member.userId === userId && member.role==="ADMIN"))
         {
             const project = await prisma.project.findUnique({
                 where:{id}
@@ -129,7 +134,7 @@ export const updateProject = async(req,res)=>{
             }
         })
 
-        res.json({project, message})
+        res.json({project, message:"updated successfully"})
 
     } catch (error) {
         console.log(error);
