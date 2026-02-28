@@ -33,7 +33,7 @@ const Layout = () => {
     {
         return (
             <div className='flex justify-center items-center h-screen bg-white dark:bg-zinc-950'>
-                <SignIn />
+                    <SignIn />
             </div>
         )
     }
